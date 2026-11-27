@@ -1,0 +1,555 @@
+% ForgeCode - ICT Website Project - Deliverable 2 (Report version 2)
+% Formatting follows the handout: article, 12 pt, Times, 14 pt bold headings,
+% justified text, 1.5 line spacing, 1 inch margins.
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage[table]{xcolor}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\onehalfspacing
+\titleformat{\section}{\fontsize{14}{17}\selectfont\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\fontsize{14}{17}\selectfont\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\fontsize{12}{15}\selectfont\bfseries}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\captionsetup{font=small,labelfont=bf}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlist{itemsep=1pt,topsep=3pt}
+\lstset{basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=1em,xrightmargin=1em,breaklines=true}
+
+\newcommand{\gitlink}{\url{https://github.com/10kaleem/ForgeCode-ICT-Website}}
+\newcommand{\subdate}{[Submission date - to be added]}
+
+\begin{document}
+
+% ------------------------------------------------------------------ title page
+\begin{titlepage}
+\singlespacing
+\centering
+{\large\bfseries BAHRIA UNIVERSITY, ISLAMABAD}\\[2pt]
+{\bfseries Department of Computer Science}\\[28pt]
+{\Large\bfseries ICT Website Project}\\[8pt]
+{\large\bfseries Redesign of the Saeed Book Bank Website}\\[10pt]
+{\large Phase 2: Design and Front-end Implementation (Deliverable 2)}\\
+{\large Report Version 2.0}\\[22pt]
+
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}>{\bfseries}p{4.2cm}p{9.8cm}@{}}
+Course        & Introduction to ICT (CSC-114)\\
+Semester      & Fall 2026 (BS CS, Semester 1)\\
+Project phase & 2\\
+Group name    & ForgeCode\\
+Member 1      & Abdul Moiz Khan (01-134262-098)\\
+Member 2      & Kaleem Umer (01-134262-036)\\
+Member 3      & Mahad Javed (01-134262-067)\\
+Instructor    & Ms. Nadia Kalsoom\\
+GitHub link   & \gitlink\\
+Submission date & \subdate\\
+\end{tabular}
+
+\vspace{22pt}
+{\bfseries Version History}\\[6pt]
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{1.7cm}|p{3.4cm}|p{6.0cm}|p{2.6cm}|}
+\hline
+\rowcolor{black!10}\bfseries Version & \bfseries Date & \bfseries Changes & \bfseries Phase\\
+\hline
+1.0 & 22 November 2026 & First version: Chapters 1 to 3 & Deliverable 1\\
+\hline
+2.0 & \subdate & Chapters 1 to 3 corrected to match the build. Chapter 4 added. Book detail pages and WhatsApp ordering added. & Deliverable 2\\
+\hline
+\end{tabular}
+\end{titlepage}
+
+% ------------------------------------------------------------------ chapter 1
+\section{Introduction}
+
+\subsection{The Organisation}
+Saeed Book Bank is an online book store. Its website describes it as one of the largest online book stores. Visitors can search and buy books on many subjects, and the store offers special prices and discounts \cite{sbb}. The original website also sells magazine subscriptions and has member sign-up and an order status page. This project follows the course handout \cite{handout}.
+
+\subsection{Problem Statement}
+The Saeed Book Bank website has most of the things a book buyer needs, but its user interface is outdated and unattractive. This is the main problem we want to solve. When we checked the home page on 21 November 2026, it looked old and crowded. Its buttons and dividers are small picture files, its pages have short codes that end in .asp, and it has many links with no clear order. Table~\ref{tab:problems} lists the problems we found and their impact.
+
+\begin{table}[H]
+\centering
+\caption{Problems found on the current website (checked on 21 November 2026) \cite{sbb}}
+\label{tab:problems}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|>{\bfseries}p{2.6cm}|Y|Y|}
+\hline
+\rowcolor{black!10}\textbf{Problem} & \textbf{What we saw} & \textbf{Impact}\\
+\hline
+1. Outdated and unattractive UI (main problem) & The footer notice runs from 2000 to 2014. Buttons and lines are small picture files. The page looks old and cluttered. & Visitors may think the store is not active. They trust it less and may leave quickly.\\
+\hline
+2. Crowded navigation & Twelve links in the top area, in two rows plus a separate line. & Visitors do not know where to click and take longer to find things.\\
+\hline
+3. Unfinished parts & A ``Coming Soon'' link is in the main menu. The newsletter ``Submit Request'' button points to ``\#''. & Visitors click links that lead nowhere, and the store may lose interest.\\
+\hline
+4. Hard-to-read prices & Prices such as PKR 12589.4435 have four decimals, and some are shown with US\$ or UK pound prices. & Prices look like mistakes and are hard to compare.\\
+\hline
+5. Limited search and browsing & The search only works by title, and advanced search is on another page. Only eight subjects are shown. & Visitors who know only the author or subject need extra steps.\\
+\hline
+\end{tabularx}}
+\end{table}
+
+\subsection{Objectives}
+The project has the following objectives.
+\begin{enumerate}
+  \item Replace the old look with a clean, modern design that uses one palette of five colours, two fonts and the same layout on every page.
+  \item Build six main pages (Home, Books, About, Contact, Suggestions, FAQ) that share the same header and footer, with every link working.
+  \item Give each book its own details page, with a button to order it on WhatsApp.
+  \item Show prices in whole rupees, with the special price clearly shown.
+  \item Make the layout work from 360 px wide (small phone) up to a desktop screen, with no sideways scrolling.
+  \item Pass the W3C HTML and CSS validators with no errors.
+  \item Add form validation and at least two more interactive features in Phase 3.
+\end{enumerate}
+
+\subsection{Target Users}
+\begin{itemize}
+  \item \textbf{Book buyers:} students, teachers, researchers and general readers who look for books and prices on a phone or a computer.
+  \item \textbf{New visitors:} people who do not know the store and decide quickly if they trust it.
+  \item \textbf{Store owner and staff:} they need a site that is simple to read and easy to update.
+\end{itemize}
+
+\subsection{Scope}
+\textbf{Included in Deliverable 2.} The static front-end website, made with HTML and CSS only. It has six main pages and one details page for each of the 13 books. Each book page has a WhatsApp order button. The Contact and Suggestions forms are laid out with labels, but their checks are added in Phase 3.
+
+\textbf{Not included.} The shopping cart, user login, membership sign-up, order status and online payment are not part of this project, because they need a server and a database. The site does not ask for passwords or card details. JavaScript features (form checks, subject filter, FAQ accordion, menu button) are in Phase 3.
+
+\textbf{Content.} The book information and cover images come from the Saeed Book Bank website and are used only for this course project. The footer credits the store and ForgeCode.
+
+% ------------------------------------------------------------------ chapter 2
+\section{Requirements Analysis}
+
+\subsection{Functional Requirements}
+Table~\ref{tab:fr} lists what the website must do and where it is done in the build.
+
+{\small\singlespacing
+\begin{longtable}{|p{1.1cm}|p{9.8cm}|p{2.9cm}|}
+\caption{Functional requirements and where they are met}\label{tab:fr}\\
+\hline
+\rowcolor{black!10}\textbf{ID} & \textbf{Requirement} & \textbf{Where}\\
+\hline
+\endfirsthead
+\hline
+\rowcolor{black!10}\textbf{ID} & \textbf{Requirement} & \textbf{Where}\\
+\hline
+\endhead
+FR1 & The same header and footer appear on every page, and all links work. & All pages\\
+\hline
+FR2 & The Home page shows a title, a short introduction, subject links and featured books. & index.html\\
+\hline
+FR3 & Books are shown as cards with cover, title, author and price. & Home, Books\\
+\hline
+FR4 & Prices are shown in whole PKR, with the special price. & Books, book pages\\
+\hline
+FR5 & A visitor can open the Books page and jump to a subject. & books.html\\
+\hline
+FR6 & A visitor can search by title or author. & Phase 3 (JavaScript)\\
+\hline
+FR7 & A table of best sellers shows title, author and special price. & books.html\\
+\hline
+FR8 & The About page gives information about the store and what it offers. & about.html\\
+\hline
+FR9 & The Contact form asks for name, email, phone, subject and message. Error messages are added in Phase 3. & contact.html\\
+\hline
+FR10 & The Suggestions form asks for name, email, suggestion type and message. & suggestions.html\\
+\hline
+FR11 & The FAQ page shows questions that open and close when clicked. & faq.html (built-in HTML)\\
+\hline
+FR12 & On small screens the menu wraps and is easy to tap. A menu button is added in Phase 3. & All pages\\
+\hline
+FR13 & The footer links to the store's Facebook page and the catalogue download page. & All pages\\
+\hline
+FR14 & Each of the 13 books has a details page with cover, author, subject and price. & book-*.html\\
+\hline
+FR15 & Each book page has an Order on WhatsApp button with the book name in the message. & book-*.html\\
+\hline
+\end{longtable}}
+
+\subsection{Non-Functional Requirements}
+Table~\ref{tab:nfr} lists the quality requirements, and how Deliverable 2 meets them.
+
+\begin{table}[H]
+\centering
+\caption{Non-functional requirements}
+\label{tab:nfr}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|p{1.4cm}|p{2.6cm}|Y|}
+\hline
+\rowcolor{black!10}\textbf{ID} & \textbf{Type} & \textbf{How it is met}\\
+\hline
+NFR1 & Speed & Only HTML, one CSS file and small cover images are used. No large scripts.\\
+\hline
+NFR2 & Readability & Body text is 16 px. Dark text is used on light backgrounds.\\
+\hline
+NFR3 & Mobile use & The layout is checked at 390 px wide. Links and buttons are large enough to tap.\\
+\hline
+NFR4 & Compatibility & Standard HTML and CSS only, so the site works in modern browsers.\\
+\hline
+NFR5 & Privacy & Forms ask only for needed information. No passwords or card details are asked for.\\
+\hline
+NFR6 & Maintainability & One style sheet, class and ID names, and comments in the code.\\
+\hline
+NFR7 & Accessibility & Images have alt text, form fields have labels, a skip link is provided, and focus is visible.\\
+\hline
+NFR8 & Visual design & One palette and two fonts are used on every page.\\
+\hline
+\end{tabularx}}
+\end{table}
+
+\subsection{User Stories}
+\begin{enumerate}[label=US\arabic*.]
+  \item As a book buyer, I want to browse books by subject, so that I can find the kind of book I want quickly.
+  \item As a student using a phone, I want the pages to fit my screen, so that I can read them without zooming.
+  \item As a customer, I want to see one clear price for each book, so that I can compare books easily.
+  \item As a customer, I want to order a book on WhatsApp from its page, so that I do not need an account.
+  \item As a visitor, I want to send a question through a form, so that I can ask about a book I cannot find.
+  \item As the store owner, I want a clean and modern site, so that new visitors trust my store.
+\end{enumerate}
+
+\subsection{ICT Requirements}
+\subsubsection{Requirements of the user}
+Table~\ref{tab:ict-user} shows what a visitor needs.
+
+\begin{table}[H]
+\centering
+\caption{What a visitor needs to use the website}
+\label{tab:ict-user}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|>{\bfseries}p{3.2cm}|Y|}
+\hline
+Hardware & A smartphone, tablet, laptop or desktop with a screen at least 360 px wide.\\
+\hline
+Operating system & Windows, macOS, Linux, Android or iOS.\\
+\hline
+Browser & A recent Chrome, Firefox, Edge or Safari, with JavaScript on. WhatsApp must be installed to send the order message.\\
+\hline
+Internet connection & Any working connection, such as home broadband or mobile data.\\
+\hline
+\end{tabularx}}
+\end{table}
+
+\subsubsection{Requirements of the organisation}
+Table~\ref{tab:ict-org} shows what the store needs to run and update the site.
+
+\begin{table}[H]
+\centering
+\caption{What the organisation needs to run and maintain the website}
+\label{tab:ict-org}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|>{\bfseries}p{3.2cm}|Y|}
+\hline
+Web server and hosting & GitHub Pages for this project. The store needs a hosting service for the live site.\\
+\hline
+Domain name & The store uses saeedbookbank.com \cite{sbb}. The domain can be pointed to the new site.\\
+\hline
+WhatsApp business number & A WhatsApp number that the store checks, used by the order buttons.\\
+\hline
+Computer for updates & A Windows 10 or later computer with at least 4 GB RAM and 10 GB free disk space.\\
+\hline
+Software for updates & Visual Studio Code, a web browser and Git.\\
+\hline
+Security and backup & Updated system and browser, antivirus, strong passwords on hosting and GitHub accounts, and regular backups.\\
+\hline
+\end{tabularx}}
+\end{table}
+
+% ------------------------------------------------------------------ chapter 3
+\section{Planning and Design}
+
+\subsection{Site Map}
+The website has six main pages and 13 book pages. Figure~\ref{fig:sitemap} shows the main pages. Every page has the same header and footer.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/wireframe-0-sitemap.png}
+\caption{Site map of the main pages (wireframe from Deliverable 1)}
+\label{fig:sitemap}
+\end{figure}
+
+Table~\ref{tab:pages} lists the files in the website.
+
+\begin{table}[H]
+\centering
+\caption{Files in the website}
+\label{tab:pages}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|p{3.4cm}|p{3.6cm}|Y|}
+\hline
+\rowcolor{black!10}\textbf{Page} & \textbf{File} & \textbf{Main content}\\
+\hline
+Home & index.html & Title, introduction, subject links, featured books, how to order\\
+\hline
+Books & books.html & Books grouped by subject, best sellers table\\
+\hline
+About & about.html & About the store and this website\\
+\hline
+Contact & contact.html & Contact form and store details\\
+\hline
+Suggestions & suggestions.html & Suggestion form\\
+\hline
+FAQ & faq.html & Questions that open and close\\
+\hline
+Book details & book-*.html (13 files) & Cover, author, subject, price, WhatsApp order button\\
+\hline
+\end{tabularx}}
+\end{table}
+
+\subsection{Wireframes and Final Design}
+The wireframes from Deliverable 1 planned the layout. Figure~\ref{fig:wf-home} shows the planned Home page. The final pages follow the same layout, with real text and book covers.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/wireframe-1-home.png}
+\caption{Planned layout of the Home page (wireframe from Deliverable 1)}
+\label{fig:wf-home}
+\end{figure}
+
+\subsection{Colour Palette and Fonts}
+Table~\ref{tab:colours} lists the palette used in the style sheet. Headings use Georgia and body text uses Arial. Both are installed on most devices.
+
+\begin{table}[H]
+\centering
+\caption{Colour palette}
+\label{tab:colours}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|p{2.0cm}|p{3.2cm}|p{2.4cm}|Y|}
+\hline
+\rowcolor{black!10}\textbf{Colour} & \textbf{Name} & \textbf{Hex code} & \textbf{Use}\\
+\hline
+\cellcolor[HTML]{1B3A5C} & Dark blue & \#1B3A5C & Header, footer, headings\\
+\hline
+\cellcolor[HTML]{C8892B} & Amber & \#C8892B & Buttons and focus outline\\
+\hline
+\cellcolor[HTML]{FAF7F2} & Cream & \#FAF7F2 & Page background\\
+\hline
+\cellcolor[HTML]{222222} & Dark grey & \#222222 & Body text\\
+\hline
+\cellcolor[HTML]{E6E1D8} & Light grey & \#E6E1D8 & Borders and table header\\
+\hline
+\cellcolor[HTML]{1E7A46} & Green & \#1E7A46 & WhatsApp order button only\\
+\hline
+\end{tabularx}}
+\end{table}
+
+\subsection{Folder Structure}
+Listing~\ref{lst:folders} shows the folder structure of the website.
+
+\begin{lstlisting}[caption={Folder structure of the website},label={lst:folders}]
+ForgeCode-SaeedBookBank/
+  index.html, books.html, about.html
+  contact.html, suggestions.html, faq.html
+  book-*.html (13 book pages)
+  css/style.css
+  images/books/ (13 cover images)
+\end{lstlisting}
+
+\subsection{Tools}
+Table~\ref{tab:tools} lists the tools used.
+
+\begin{table}[H]
+\centering
+\caption{Tools used in Deliverable 2}
+\label{tab:tools}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|>{\bfseries}p{3.6cm}|Y|}
+\hline
+Visual Studio Code & Writing HTML and CSS.\\
+\hline
+Chrome, Firefox, Edge & Viewing the pages and testing screen widths with the developer tools.\\
+\hline
+Git and GitHub & Version control and the shared repository.\\
+\hline
+Overleaf & Writing this report in LaTeX.\\
+\hline
+W3C validators & Checking the HTML and CSS.\\
+\hline
+\end{tabularx}}
+\end{table}
+
+\subsection{Team Roles and Work Split}
+Table~\ref{tab:roles} shows who did what in Deliverable 2.
+
+\begin{table}[H]
+\centering
+\caption{Team roles and work split}
+\label{tab:roles}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|p{3.1cm}|p{3.3cm}|Y|}
+\hline
+\rowcolor{black!10}\textbf{Member} & \textbf{Main role} & \textbf{Work in Deliverable 2}\\
+\hline
+Abdul Moiz Khan & Content and HTML & Main page content, book pages, book cover images.\\
+\hline
+Kaleem Umer & Team lead and repository & GitHub repository, contact and suggestions pages, FAQ, this report.\\
+\hline
+Mahad Javed & CSS and design & Style sheet, responsive layout, colours and fonts, validation checks.\\
+\hline
+\end{tabularx}}
+\end{table}
+
+\subsection{Time Plan}
+Table~\ref{tab:plan} shows the time plan up to the final deadline.
+
+\begin{table}[H]
+\centering
+\caption{Weekly time plan}
+\label{tab:plan}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|p{3.2cm}|Y|}
+\hline
+\rowcolor{black!10}\textbf{Dates (2026)} & \textbf{Work}\\
+\hline
+22 -- 26 Nov & Deliverable 2: build the pages, style sheet, book pages, WhatsApp buttons, validation check, report version 2.\\
+\hline
+27 Nov -- 3 Dec & JavaScript: form checks, subject search and filter, FAQ accordion, mobile menu button.\\
+\hline
+4 -- 7 Dec & Testing: at least 10 test cases, two browsers, phone-size screen, bug log. Publish on GitHub Pages.\\
+\hline
+8 -- 10 Dec & Final report (Chapters 5 to 8), video for LinkedIn, final checks. Submit Deliverable 3 on 10 Dec.\\
+\hline
+11 -- 16 Dec & Practise the demo. Every member prepares to answer questions on any part of the work.\\
+\hline
+17 Dec & Live demo and viva.\\
+\hline
+\end{tabularx}}
+\end{table}
+
+% ------------------------------------------------------------------ chapter 4
+\section{Front-end Implementation}
+
+\subsection{HTML Structure}
+Every page uses the same main parts: a header with the navigation, a main area, and a footer. The header is a \texttt{header} element and the navigation is a \texttt{nav} element. The main area is a \texttt{main} element, and each section inside it is a \texttt{section} element. Each book card is an \texttt{article}. The footer is a \texttt{footer} element. Each page has one \texttt{h1} heading, and the other headings go down in order (h2, then h3).
+
+Listing~\ref{lst:html} shows a short excerpt of the header and navigation used on every page.
+
+\begin{lstlisting}[caption={Header and navigation (shared by every page)},label={lst:html}]
+<header id="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="index.html">Saeed Book Bank</a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-list">
+        <li><a href="books.html" aria-current="page">Books</a></li>
+        ...
+      </ul>
+    </nav>
+  </div>
+</header>
+\end{lstlisting}
+
+The \texttt{aria-current} attribute marks the page the visitor is on. The \texttt{aria-label} tells screen readers what the navigation is for.
+
+Each book page has a form-free ordering button, which is a normal link. Listing~\ref{lst:wa} shows the WhatsApp link. The message text is written with the book name, author and price, and is encoded so it works in a link.
+
+\begin{lstlisting}[caption={WhatsApp order link on a book page},label={lst:wa}]
+<a class="btn btn-whatsapp"
+   href="https://wa.me/92123456789?text=Hello%2C%20I%20would%20like%20to%20order%20...">
+  Order on WhatsApp
+</a>
+\end{lstlisting}
+
+\subsection{CSS Design}
+The site uses one external style sheet, \texttt{css/style.css}, linked from every page. Colours and fonts are stored once as variables at the top of the file, so a change is made in one place. Layout uses Flexbox for the header and footer, and Grid for the book cards and the two-column contact page. Class names describe the parts (for example \texttt{.book-card}, \texttt{.btn}) and the ID selectors name the page sections (for example \texttt{\#site-header}).
+
+Listing~\ref{lst:css} shows the variables and one class used on the buttons.
+
+\begin{lstlisting}[caption={Colour variables and button style},label={lst:css}]
+:root {
+  --blue: #1B3A5C;
+  --amber: #C8892B;
+  --cream: #FAF7F2;
+  --font-heading: Georgia, "Times New Roman", serif;
+}
+.btn {
+  background: var(--amber);
+  color: #222222;
+  padding: 12px 24px;
+}
+\end{lstlisting}
+
+\subsection{Responsive Layout}
+The site uses a media query for screens 700 px wide or narrower. On these screens the header stacks, the book cards show two per row, and the book detail and contact pages show one column. The page was checked at 390 px wide, and no page scrolls sideways at that width or at desktop width.
+
+Listing~\ref{lst:media} shows the media query.
+
+\begin{lstlisting}[caption={Media query for phones and small screens},label={lst:media}]
+@media (max-width: 700px) {
+  .header-inner { flex-direction: column; align-items: flex-start; }
+  .book-grid { grid-template-columns: repeat(2, 1fr); }
+  .book-detail, .two-col { grid-template-columns: 1fr; }
+}
+\end{lstlisting}
+
+\subsection{Screenshots}
+Figure~\ref{fig:shot-home} shows the Home page on a desktop screen, and Figure~\ref{fig:shot-mobile} shows the book details page on a phone. Both screenshots were taken from the finished pages.
+
+\begin{figure}[H]
+\centering
+% Replace these two files with real screenshots before submitting.
+\fbox{\parbox{0.9\textwidth}{\centering\vspace{60pt}Screenshot placeholder: Home page on desktop (1100 px wide)\vspace{60pt}}}
+\caption{Home page on desktop}
+\label{fig:shot-home}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.45\textwidth}{\centering\vspace{60pt}Screenshot placeholder: book page on a phone (390 px wide)\vspace{60pt}}}
+\caption{Book details page on a phone}
+\label{fig:shot-mobile}
+\end{figure}
+
+\subsection{Design Decisions}
+\begin{itemize}
+  \item \textbf{One palette and two fonts.} The old site uses many colours and styles. We use five colours and one accent colour for the WhatsApp button, so the pages look calm and consistent.
+  \item \textbf{No animations.} The site does not use moving effects, so it stays simple and easy to read.
+  \item \textbf{Prices in whole rupees.} The old four-decimal prices are replaced by whole PKR amounts.
+  \item \textbf{Ordering by WhatsApp.} We did not build a cart, login or payment, because these need a server. WhatsApp lets the store take orders with no backend.
+  \item \textbf{Standard elements first.} The FAQ uses the built-in details element, so it works without JavaScript.
+  \item \textbf{Placeholder number.} The WhatsApp number is a placeholder and must be replaced by the store's real number.
+\end{itemize}
+
+\subsection{Validation}
+The HTML and CSS are checked with the W3C validators. Results are recorded here before submission.
+
+\begin{table}[H]
+\centering
+\caption{Validator results}
+\label{tab:validate}
+{\small\singlespacing
+\begin{tabularx}{\textwidth}{|p{4.0cm}|p{3.0cm}|Y|}
+\hline
+\rowcolor{black!10}\textbf{Check} & \textbf{Result} & \textbf{Notes}\\
+\hline
+W3C HTML validator (all pages) & [to be filled] & [to be filled]\\
+\hline
+W3C CSS validator (style.css) & [to be filled] & [to be filled]\\
+\hline
+\end{tabularx}}
+\end{table}
+
+\subsection{Known Limits}
+Some parts of the handout are not in Deliverable 2 and are planned for Phase 3: form checks with error messages, the subject search and filter on the Books page, the FAQ accordion script, and the mobile menu button. The Contact and Suggestions forms do not send anything yet.
+
+% ------------------------------------------------------------------ references
+\begin{thebibliography}{9}
+\bibitem{sbb} Saeed Book Bank, ``Welcome to SAEED BOOK BANK :: One of the largest online book store,'' saeedbookbank.com. [Online]. Available: \url{http://saeedbookbank.com/}. [Accessed: Nov. 21, 2026].
+\bibitem{handout} Bahria University Islamabad, Department of Computer Science, ``ICT Website Project,'' CSC-114 Introduction to Information and Communication Technology, Fall 2026, project handout.
+\end{thebibliography}
+
+\end{document}
